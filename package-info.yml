@@ -1,0 +1,2 @@
+dependencies:
+    - git::/lingtalfi/QuickPdo:2.7.0
