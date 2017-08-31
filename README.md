@@ -28,7 +28,18 @@ I'm tired of typing the fields of a table to build my self made orm objects manu
 
 
 
-How to
+What tools?
+================
+
+- CopyPasteUtil
+- OrmToolsHelper
+    - getPhpDefaultValuesByTables
+- ChipGenerator
+
+
+
+
+CopyPasteUtil - Howto
 ==========
 
 ```php
@@ -101,8 +112,407 @@ $this->meta_keywords = '';
 
 
 
+
+Chip - Howto
+==========
+
+Chip helps you create php object based on one or more tables.
+
+There is a ChipGenerator too.
+
+See the [chip conception note](https://github.com/lingtalfi/OrmTools/blob/master/doc/chip.md).
+
+
+Using the ChipGenerator looks like this:
+
+
+```php
+
+// your framework init here...
+
+$targetDir = "/myphp/class/Test";
+$targetNameSpace = "Test";
+
+
+$builder = ChipGenerator::create()
+    ->setTargetDir($targetDir)
+    ->setTargetNamespace($targetNameSpace);
+
+
+$builder->newChip('event', ChipDescription::create()
+    ->setTables([
+        'ekev_event',
+        'ekev_event_lang',
+    ])
+    ->setIgnoreColumns([
+        'id',
+        'event_id',
+    ])
+    ->addLinkColumn('location_id', 'location')
+);
+```
+
+So, above, I asked the generator to create a Chip using the two tables: ekev_event and ekev_event_lang,
+which are represented in the schema below.
+
+[![chip-event.png](https://s19.postimg.org/40f7lu0df/chip-event.png)](https://postimg.org/image/tj7jyujxb/)
+
+Then, I asked him to ignore the id and event_id columns, and finally I asked him to create a one-to-one
+relationship with the LocationChip, yet to be created.
+
+And, this is what it produces (in the file /myphp/class/Test/EventChip.php):
+
+
+```php
+<?php
+
+
+namespace Test;
+
+
+
+
+class EventChip
+{
+
+    private $shop_id;
+    private $name;
+    private $start_date;
+    private $end_date;
+    /**
+    * @var LocationChip
+    */
+    private $location;
+    private $lang_id;
+    private $label;
+
+
+
+    public function __construct()
+    {
+        $this->shop_id = 0;
+        $this->name = '';
+        $this->start_date = '';
+        $this->end_date = '';
+        $this->location = NULL;
+        $this->lang_id = 0;
+        $this->label = '';
+
+    }
+
+
+    public static function create()
+    {
+        return new static();
+    }
+
+    
+    public function getShopId()
+    {
+        return $this->shop_id;
+    }
+
+    public function setShopId($shop_id)
+    {
+        $this->shop_id = $shop_id;
+        return $this;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getStartDate()
+    {
+        return $this->start_date;
+    }
+
+    public function setStartDate($start_date)
+    {
+        $this->start_date = $start_date;
+        return $this;
+    }
+
+    public function getEndDate()
+    {
+        return $this->end_date;
+    }
+
+    public function setEndDate($end_date)
+    {
+        $this->end_date = $end_date;
+        return $this;
+    }
+
+    /**
+    * @return LocationChip
+    */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    public function setLocation(LocationChip $location)
+    {
+        $this->location = $location;
+        return $this;
+    }
+
+    public function getLangId()
+    {
+        return $this->lang_id;
+    }
+
+    public function setLangId($lang_id)
+    {
+        $this->lang_id = $lang_id;
+        return $this;
+    }
+
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    public function setLabel($label)
+    {
+        $this->label = $label;
+        return $this;
+    }
+
+
+
+
+}
+```
+
+
+So, pretty handy isn't it.
+
+There is one more function you need to know about, to create a one-to-many relationship with another Chip.
+
+So let's look at another example:
+
+
+```php
+<?php 
+
+$builder->newChip('location', ChipDescription::create()
+    ->setTables([
+        'ekev_location',
+    ])
+    ->setIgnoreColumns([
+        'id',
+    ])
+    ->setTransformerColumn('country_id', 'country', '')
+    ->addChildrenColumn('hotels', 'Hotel')
+);
+
+```
+
+Here, I ask the generator to transform the country_id column in the ekev_location table into the country column.
+That's because I plan to use my Chip like this:
+
+- setCountry ( 'fra' )
+
+Rather than like this:
+
+- setCountryId ( 65 )
+
+
+Then, I add a one-to-many relationship with the addChildrenColumn method.
+
+Read the source code of the ChipGenerator and ChipDescription objects to understand the parameters.
+
+The generated class looks like this:
+
+
+```php
+<?php
+
+
+namespace Test;
+
+
+
+
+class LocationChip
+{
+
+    private $label;
+    private $address;
+    private $city;
+    private $postcode;
+    private $phone;
+    private $extra;
+    private $country;
+    private $shop_id;
+    /**
+    * @var HotelChip[]
+    */
+    private $hotels;
+
+
+
+    public function __construct()
+    {
+        $this->label = '';
+        $this->address = '';
+        $this->city = '';
+        $this->postcode = '';
+        $this->phone = '';
+        $this->extra = '';
+        $this->country = '';
+        $this->shop_id = 0;
+        $this->hotels = array (
+);
+
+    }
+
+
+    public static function create()
+    {
+        return new static();
+    }
+
+    
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    public function setLabel($label)
+    {
+        $this->label = $label;
+        return $this;
+    }
+
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    public function setAddress($address)
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    public function setCity($city)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    public function getPostcode()
+    {
+        return $this->postcode;
+    }
+
+    public function setPostcode($postcode)
+    {
+        $this->postcode = $postcode;
+        return $this;
+    }
+
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+
+    public function getExtra()
+    {
+        return $this->extra;
+    }
+
+    public function setExtra($extra)
+    {
+        $this->extra = $extra;
+        return $this;
+    }
+
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    public function setCountry($country)
+    {
+        $this->country = $country;
+        return $this;
+    }
+
+    public function getShopId()
+    {
+        return $this->shop_id;
+    }
+
+    public function setShopId($shop_id)
+    {
+        $this->shop_id = $shop_id;
+        return $this;
+    }
+
+    /**
+    * @return HotelChip[]
+    */
+    public function getHotels()
+    {
+        return $this->hotels;
+    }
+
+    public function addHotel(HotelChip $hotel)
+    {
+        $this->hotels[] = $hotel;
+        return $this;
+    }
+
+
+
+
+}
+```
+
+
+
+
+That's it.
+But remember that creating Chips is just the easy/dumb part of the chip implementation: you also need 
+to implement the Processor part, and there is no generator for that yet.
+
+So, may the force be with you.
+
+
+
+
+
+
+
+
 History Log
 ------------------
+    
+- 1.1.0 -- 2017-08-31
+
+    - add ChipGenerator
     
 - 1.0.0 -- 2017-08-30
 
