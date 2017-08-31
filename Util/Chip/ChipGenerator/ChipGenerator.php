@@ -116,6 +116,7 @@ class ChipGenerator
         $realLinkColumns = $desc->getLinkColumns();
         $transformers = $desc->getTransformerColumns();
         $children = $desc->getChildrenColumns();
+        $columns = $desc->getColumns();
         $chKeys = [];
         foreach ($children as $child) {
 
@@ -152,6 +153,11 @@ class ChipGenerator
             if (false === array_key_exists($linkColumn[0], $def)) {
                 $def[$linkColumn[0]] = null;
             }
+        }
+
+
+        foreach ($columns as $col => $defaultValue) {
+            $def[$col] = $defaultValue;
         }
 
 

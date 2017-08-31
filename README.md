@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.4.0 -- 2017-08-31
+
+    - add ChipDescription.addColumn to add regular columns
+    
 - 1.3.0 -- 2017-08-31
 
     - now ChipDescription.addLinkColumn can also create new columns (not just transform columns)

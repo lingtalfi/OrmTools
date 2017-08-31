@@ -94,6 +94,12 @@ class ChipDescription
      */
     private $childrenColumns;
 
+    /**
+     * @var array of columnName => defaultValue
+     *
+     */
+    private $columns;
+
     public function __construct()
     {
         $this->tables = [];
@@ -101,6 +107,7 @@ class ChipDescription
         $this->linkColumns = [];
         $this->transformerColumns = [];
         $this->childrenColumns = [];
+        $this->columns = [];
     }
 
 
@@ -176,6 +183,20 @@ class ChipDescription
     public function addChildrenColumn($columnName, $chipClassName)
     {
         $this->childrenColumns[] = [$columnName, $chipClassName];
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getColumns()
+    {
+        return $this->columns;
+    }
+
+    public function addColumn($column, $defaultValue = null)
+    {
+        $this->columns[$column] = $defaultValue;
         return $this;
     }
 
