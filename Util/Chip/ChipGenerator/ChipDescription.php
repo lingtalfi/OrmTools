@@ -26,6 +26,7 @@ class ChipDescription
      *
      * array of item, each of which being:
      *      - 0: columnName: the column to turn into a link
+     *                          If the column does not exist, it will be created, using the propertyName
      *      - 1: propertyName: the new column name (replaces columnName)
      *      - 2: chipClassName:
      *              - either the chip class name to link to (no backslash), and without the Chip suffix.

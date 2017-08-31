@@ -139,13 +139,22 @@ class ChipGenerator
             }
             $chKeys[$child] = [$hint, $singular];
         }
+
+        $def = OrmToolsHelper::getPhpDefaultValuesByTables($tables);
+
         $linkCols = []; // colName => propertyName
         foreach ($realLinkColumns as $linkColumn) {
             $linkCols[$linkColumn[0]] = [$linkColumn[1], $linkColumn[2]];
+            /**
+             * addLink can also create a new column (if the
+             * column does not exist)
+             */
+            if (false === array_key_exists($linkColumn[0], $def)) {
+                $def[$linkColumn[0]] = null;
+            }
         }
 
 
-        $def = OrmToolsHelper::getPhpDefaultValuesByTables($tables);
         foreach ($def as $col => $value) {
 
 

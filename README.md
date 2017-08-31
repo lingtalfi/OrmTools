@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.3.0 -- 2017-08-31
+
+    - now ChipDescription.addLinkColumn can also create new columns (not just transform columns)
+    
 - 1.2.0 -- 2017-08-31
 
     - Chip now has its own section
