@@ -77,8 +77,6 @@ class ChipGenerator
         $sStatements = $this->computeStatements($this->_statements);
 
 
-
-
         $tpl = file_get_contents(__DIR__ . "/ChipTemplate.tpl.php");
         $tpl = str_replace([
             'Module\\EkomEvents\\Chip\\Event', // namespace
@@ -95,7 +93,6 @@ class ChipGenerator
             $sAccessors,
             $sStatements,
         ], $tpl);
-
 
 
 //        header("content-type: text/plain");
@@ -125,8 +122,7 @@ class ChipGenerator
             $path = $child[1];
             if (false !== strpos($path, '\\')) {
                 $this->_statements[] = $path;
-            }
-            else{
+            } else {
                 $path .= 'Chip';
             }
 
@@ -163,6 +159,22 @@ class ChipGenerator
             } elseif (array_key_exists($col, $transformers)) {
                 $type = 'transformer';
                 $value = $transformers[$col][1];
+                if (is_array($value)) {
+                    if (array_key_exists('hint', $value)) {
+                        $hint = $value['hint'];
+                        $p = explode('\\', $hint);
+                        if (count($p) > 1) {
+                            $this->_statements[] = $hint;
+                            $hint = array_pop($p);
+                        }
+
+                    }
+                    if (array_key_exists('default', $value)) {
+                        $value = $value['default'];
+                    } else {
+                        $value = null;
+                    }
+                }
                 $col = $transformers[$col][0];
             } /**
              * linked columns also transform the column name
@@ -309,7 +321,7 @@ class ChipGenerator
     }
 
 
-    private function renderHint(&$s, $hint, $sp, $kw='var')
+    private function renderHint(&$s, $hint, $sp, $kw = 'var')
     {
         $s .= $sp . '/**' . PHP_EOL;
         $s .= $sp . "* @$kw $hint" . PHP_EOL;

@@ -123,7 +123,9 @@ There is a ChipGenerator too.
 See the [chip conception note](https://github.com/lingtalfi/OrmTools/blob/master/doc/chip.md).
 
 
-Using the ChipGenerator looks like this:
+Using the ChipGenerator looks like this.
+First, create the tables you need (they must exist because the generator will inspect them...).
+Then use a code like this:
 
 
 ```php

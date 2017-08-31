@@ -46,7 +46,13 @@ class ChipDescription
     /**
      * @var array of oldColumnName to array:
      *                  - 0: newColumnName, the new name of the column
-     *                  - 1: defaultValue, the default value for the new column
+     *                  - 1: details, mixed, can be either:
+     *                              - array: the details, an array with:
+     *                                      - default: mixed, the default value
+     *                                      - hint: string, the hint for the argument of the corresponding
+     *                                                  set method. If it contains backslashes, it will be
+     *                                                  considered as an external method.
+     *                              - not an array: the default value for the new column
      *
      *      With oldColumnName being the name of the column to transform
      *
@@ -152,9 +158,9 @@ class ChipDescription
         return $this->transformerColumns;
     }
 
-    public function setTransformerColumn($oldColumnName, $newColumnName, $defaultValue = null)
+    public function setTransformerColumn($oldColumnName, $newColumnName, $details = null)
     {
-        $this->transformerColumns[$oldColumnName] = [$newColumnName, $defaultValue];
+        $this->transformerColumns[$oldColumnName] = [$newColumnName, $details];
         return $this;
     }
 
