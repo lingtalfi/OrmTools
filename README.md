@@ -512,6 +512,11 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.2.0 -- 2017-08-31
+
+    - Chip now has its own section
+    - add ChipProcessor
+    
 - 1.1.0 -- 2017-08-31
 
     - add ChipGenerator
