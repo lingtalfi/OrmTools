@@ -512,6 +512,13 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.6.0 -- 2017-09-01
+
+    - add OrmToolsHelper::renderClassPropertiesDeclaration method
+    - add OrmToolsHelper::renderHint method
+    - add OrmToolsHelper::renderConstructorDefaultValues method
+    - add OrmToolsHelper::renderStatements method
+    
 - 1.5.0 -- 2017-09-01
 
     - add OrmToolsHelper.getPhpDefaultValuesByTables isForeignKey parameter to the callbacks array

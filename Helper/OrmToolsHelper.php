@@ -67,6 +67,76 @@ class OrmToolsHelper
         return $ret;
     }
 
+    public static function renderConstructorDefaultValues(array $values)
+    {
+        $s = '';
+        $c = 0;
+        foreach ($values as $col => $value) {
+            if (0 === $c++) {
+                $sp = '';
+            } else {
+                $sp = str_repeat(' ', 8);
+            }
+            $s .= $sp . '$this->' . $col . ' = ' . var_export($value, true) . ';' . PHP_EOL;
+        }
+        return $s;
+    }
+
+
+    public static function renderStatements(array $statements)
+    {
+        $s = '';
+        foreach ($statements as $statement) {
+            $s .= 'use ' . $statement . ';' . PHP_EOL;
+        }
+        return $s;
+    }
+
+    /**
+     *
+     * Render the class properties declaration:
+     *          private $myVar;
+     *          private $myVar2;
+     *          ...
+     *
+     *
+     * @param array $colsInfo , array of column => info
+     *              with:
+     *                  - info: array containing:
+     *                          - ?hint: string, the hint to use for this property
+     * @param string $visibility
+     * @return string
+     */
+    public static function renderClassPropertiesDeclaration(array $colsInfo, $visibility = 'private')
+    {
+        $s = '';
+        $c = 0;
+        foreach ($colsInfo as $col => $info) {
+            if (0 === $c++) {
+                $sp = '';
+            } else {
+                $sp = str_repeat(' ', 4);
+            }
+            $hint = $info['hint'];
+            if (null !== $hint) {
+                self::renderHint($s, $hint, $sp);
+            }
+            $s .= $sp . $visibility . ' $' . $col . ';' . PHP_EOL;
+        }
+        return $s;
+    }
+
+
+    public static function renderHint(&$s, $hint, $sp = null, $kw = 'var')
+    {
+        if (null === $sp) {
+            $sp = str_repeat(' ', 4);
+        }
+        $s .= $sp . '/**' . PHP_EOL;
+        $s .= $sp . "* @$kw $hint" . PHP_EOL;
+        $s .= $sp . "*/" . PHP_EOL;
+    }
+
 
     //--------------------------------------------
     //

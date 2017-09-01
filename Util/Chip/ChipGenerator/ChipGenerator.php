@@ -71,10 +71,10 @@ class ChipGenerator
 //        az($columnsInfo);
 
 
-        $sProps = $this->computeDefineProperties($columnsInfo);
+        $sProps = OrmToolsHelper::renderClassPropertiesDeclaration($columnsInfo);
         $sConstructor = $this->computeConstructorInit($columnsInfo);
         $sAccessors = $this->computeAccessors($columnsInfo);
-        $sStatements = $this->computeStatements($this->_statements);
+        $sStatements = OrmToolsHelper::renderStatements($this->_statements);
 
 
         $tpl = file_get_contents(__DIR__ . "/ChipTemplate.tpl.php");
@@ -232,25 +232,6 @@ class ChipGenerator
     }
 
 
-    private function computeDefineProperties(array $colsInfo)
-    {
-        $s = '';
-        $c = 0;
-        foreach ($colsInfo as $col => $info) {
-            if (0 === $c++) {
-                $sp = '';
-            } else {
-                $sp = str_repeat(' ', 4);
-            }
-            $hint = $info['hint'];
-            if (null !== $hint) {
-                $this->renderHint($s, $hint, $sp);
-            }
-            $s .= $sp . 'private $' . $col . ';' . PHP_EOL;
-        }
-        return $s;
-    }
-
     private function computeConstructorInit(array $colsInfo)
     {
         $s = '';
@@ -279,7 +260,7 @@ class ChipGenerator
 
             $hint = $info['hint'];
             if (null !== $hint) {
-                $this->renderHint($s, $hint, $sp, 'return');
+                OrmToolsHelper::renderHint($s, $hint, $sp, 'return');
             }
 
             $fnName = "get" . $pascal;
@@ -336,19 +317,4 @@ class ChipGenerator
     }
 
 
-    private function renderHint(&$s, $hint, $sp, $kw = 'var')
-    {
-        $s .= $sp . '/**' . PHP_EOL;
-        $s .= $sp . "* @$kw $hint" . PHP_EOL;
-        $s .= $sp . "*/" . PHP_EOL;
-    }
-
-    private function computeStatements(array $statements)
-    {
-        $s = '';
-        foreach ($statements as $statement) {
-            $s .= 'use ' . $statement . ';' . PHP_EOL;
-        }
-        return $s;
-    }
 }
