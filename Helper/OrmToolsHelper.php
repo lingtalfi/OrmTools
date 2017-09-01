@@ -15,7 +15,7 @@ class OrmToolsHelper
         $ret = [];
         $defaultDb = QuickPdoInfoTool::getDatabase();
         $callbacks = array_merge([
-            '*' => function ($type, $isNullable, $isAutoIncremented, $nbColumns) {
+            '*' => function ($type, $isNullable, $isAutoIncremented, $nbColumns, $isForeignKey) {
                 if ($isAutoIncremented) {
                     return null;
                 }
@@ -28,6 +28,12 @@ class OrmToolsHelper
                         case 'tinyint':
                         case 'decimal':
                             return 0;
+                            break;
+                        case 'date':
+                            return '0000-00-00';
+                            break;
+                        case 'datetime':
+                            return '0000-00-00 00:00:00';
                             break;
                         default:
                             return '';
@@ -42,10 +48,10 @@ class OrmToolsHelper
 
             list($fullTable, $db, $table) = self::explodeTable($table, $defaultDb);
 
-
             $nullables = QuickPdoInfoTool::getColumnNullabilities($fullTable);
             $types = QuickPdoInfoTool::getColumnDataTypes($fullTable);
             $ai = QuickPdoInfoTool::getAutoIncrementedField($table, $db);
+            $fks = QuickPdoInfoTool::getForeignKeysInfo($table, $db);
 
             $nbColumns = count($types);
 
@@ -53,7 +59,8 @@ class OrmToolsHelper
                 $cb = (array_key_exists($type, $callbacks)) ? $callbacks[$type] : $callbacks['*'];
                 $isNullable = (true === $nullables[$column]);
                 $isAutoIncremented = ($ai === $column);
-                $phpVal = call_user_func($cb, $type, $isNullable, $isAutoIncremented, $nbColumns);
+                $isFk = (array_key_exists($column, $fks));
+                $phpVal = call_user_func($cb, $type, $isNullable, $isAutoIncremented, $nbColumns, $isFk);
                 $ret[$column] = $phpVal;
             }
         }

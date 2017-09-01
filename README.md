@@ -512,6 +512,11 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.5.0 -- 2017-09-01
+
+    - add OrmToolsHelper.getPhpDefaultValuesByTables isForeignKey parameter to the callbacks array
+    - add OrmToolsHelper.getPhpDefaultValuesByTables default handling for types date and datetime
+    
 - 1.4.0 -- 2017-08-31
 
     - add ChipDescription.addColumn to add regular columns
