@@ -72,7 +72,7 @@ class ChipGenerator
 
 
         $sProps = OrmToolsHelper::renderClassPropertiesDeclaration($columnsInfo);
-        $sConstructor = $this->computeConstructorInit($columnsInfo);
+        $sConstructor = OrmToolsHelper::renderConstructorInit($columnsInfo);
         $sAccessors = $this->computeAccessors($columnsInfo);
         $sStatements = OrmToolsHelper::renderStatements($this->_statements);
 
@@ -232,20 +232,7 @@ class ChipGenerator
     }
 
 
-    private function computeConstructorInit(array $colsInfo)
-    {
-        $s = '';
-        $c = 0;
-        foreach ($colsInfo as $col => $info) {
-            if (0 === $c++) {
-                $sp = '';
-            } else {
-                $sp = str_repeat(' ', 8);
-            }
-            $s .= $sp . '$this->' . $col . ' = ' . var_export($info['default'], true) . ';' . PHP_EOL;
-        }
-        return $s;
-    }
+
 
     private function computeAccessors(array $colsInfo)
     {

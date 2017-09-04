@@ -4,10 +4,85 @@
 namespace OrmTools\Helper;
 
 
+use Bat\CaseTool;
 use QuickPdo\QuickPdoInfoTool;
 
 class OrmToolsHelper
 {
+
+    private static $irregular = [
+        'woman' => 'women',
+        'man' => 'men',
+        'child' => 'children',
+        'tooth' => 'teeth',
+        'foot' => 'feet',
+        'person' => 'people',
+        'leaf' => 'leaves',
+        'mouse' => 'mice',
+        'goose' => 'geese',
+        'half' => 'halves',
+        'knife' => 'knives',
+        'wife' => 'wives',
+        'life' => 'lives',
+        'elf' => 'elves',
+        'loaf' => 'loaves',
+        'potato' => 'potatoes',
+        'tomato' => 'tomatoes',
+        'cactus' => 'cacti',
+        'focus' => 'foci',
+        'fungus' => 'fungi',
+        'nucleus' => 'nuclei',
+        'syllabus' => 'syllabi',
+        'analysis' => 'analyses',
+        'diagnosis' => 'diagnoses',
+        'oasis' => 'oases',
+        'thesis' => 'theses',
+        'crisis' => 'crises',
+        'phenomenon' => 'phenomena',
+        'criterion' => 'criteria',
+        'datum' => 'data',
+    ];
+
+
+    public static function getPlural($word)
+    {
+
+        /**
+         * http://www.ef.com/english-resources/english-grammar/singular-and-plural-nouns/
+         */
+
+        if (array_key_exists($word, self::$irregular)) {
+            return self::$irregular[$word];
+        }
+
+        $lastLetter = substr($word, -1);
+        switch ($lastLetter) {
+            case "y":
+                $word = substr($word, 0, -1) . 'ies';
+                break;
+            case "s":
+            case "x":
+            case "z":
+                $word .= 'es';
+                break;
+            default:
+                $lastTwoLetters = substr($word, -2);
+                switch ($lastTwoLetters) {
+                    case "ch":
+                    case "sh":
+                        $word .= 'es';
+                        break;
+                    default:
+                        $word .= "s";
+                        break;
+                }
+                break;
+        }
+
+        return $word;
+    }
+
+
     public static function getPhpDefaultValuesByTables(array $tables, array $callbacks = [])
     {
 
@@ -66,6 +141,53 @@ class OrmToolsHelper
         }
         return $ret;
     }
+
+
+    public static function renderGetMethod($column, $hint = null)
+    {
+
+        $sp = str_repeat(' ', 4);
+        $sp2 = str_repeat(' ', 8);
+
+        $pascal = CaseTool::snakeToFlexiblePascal($column);
+        $fnName = "get" . $pascal;
+        if (null !== $hint) {
+            OrmToolsHelper::renderHint($s, $hint, $sp, 'return');
+        }
+        $s = '';
+        $s .= $sp . 'public function ' . $fnName . '()' . PHP_EOL;
+        $s .= $sp . '{' . PHP_EOL;
+        $s .= $sp2 . 'return $this->' . $column . ';' . PHP_EOL;
+        $s .= $sp . '}' . PHP_EOL;
+        $s .= PHP_EOL;
+        return $s;
+    }
+
+    public static function renderSetMethod($column, $hint = null, $setKeyword = "set")
+    {
+        $sp = str_repeat(' ', 4);
+        $sp2 = str_repeat(' ', 8);
+
+        $pascal = CaseTool::snakeToFlexiblePascal($column);
+
+        $s = '';
+        $fnName = $setKeyword . $pascal;
+        $s .= $sp . 'public function ' . $fnName . '(';
+
+        if (null !== $hint) {
+            $objectHint = rtrim($hint, '[]');
+            $s .= $objectHint . ' ';
+        }
+
+        $s .= '$' . $column . ')' . PHP_EOL;
+        $s .= $sp . '{' . PHP_EOL;
+        $s .= $sp2 . '$this->' . $column . ' = $' . $column . ';' . PHP_EOL;
+        $s .= $sp2 . 'return $this;' . PHP_EOL;
+        $s .= $sp . '}' . PHP_EOL;
+        $s .= PHP_EOL;
+        return $s;
+    }
+
 
     public static function renderConstructorDefaultValues(array $values)
     {
@@ -126,6 +248,21 @@ class OrmToolsHelper
         return $s;
     }
 
+    public static function renderConstructorInit(array $colsInfo)
+    {
+        $s = '';
+        $c = 0;
+        foreach ($colsInfo as $col => $info) {
+            if (0 === $c++) {
+                $sp = '';
+            } else {
+                $sp = str_repeat(' ', 8);
+            }
+            $s .= $sp . '$this->' . $col . ' = ' . var_export($info['default'], true) . ';' . PHP_EOL;
+        }
+        return $s;
+
+    }
 
     public static function renderHint(&$s, $hint, $sp = null, $kw = 'var')
     {

@@ -512,6 +512,13 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.7.0 -- 2017-09-01
+
+    - add OrmToolsHelper::getPlural method
+    - add OrmToolsHelper::renderSetMethod method
+    - add OrmToolsHelper::renderGetMethod method
+    
+    
 - 1.6.0 -- 2017-09-01
 
     - add OrmToolsHelper::renderClassPropertiesDeclaration method
