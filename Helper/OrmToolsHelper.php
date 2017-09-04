@@ -163,8 +163,14 @@ class OrmToolsHelper
         return $s;
     }
 
-    public static function renderSetMethod($column, $hint = null, $setKeyword = "set")
+    public static function renderSetMethod($column, $hint = null, $setKeyword = "set", array $options = [])
     {
+        $options = array_merge([
+            'beginning' => '',
+        ], $options);
+        $beginning = $options['beginning'];
+
+
         $sp = str_repeat(' ', 4);
         $sp2 = str_repeat(' ', 8);
 
@@ -181,6 +187,7 @@ class OrmToolsHelper
 
         $s .= '$' . $column . ')' . PHP_EOL;
         $s .= $sp . '{' . PHP_EOL;
+        $s .= $beginning;
         $s .= $sp2 . '$this->' . $column . ' = $' . $column . ';' . PHP_EOL;
         $s .= $sp2 . 'return $this;' . PHP_EOL;
         $s .= $sp . '}' . PHP_EOL;
