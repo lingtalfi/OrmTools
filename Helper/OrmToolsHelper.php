@@ -207,6 +207,7 @@ class OrmToolsHelper
 
     public static function renderStatements(array $statements)
     {
+        $statements = array_unique($statements);
         $s = '';
         foreach ($statements as $statement) {
             $s .= 'use ' . $statement . ';' . PHP_EOL;

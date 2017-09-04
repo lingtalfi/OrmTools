@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.8.0 -- 2017-09-04
+
+    - update OrmToolsHelper::renderStatements method now eliminates doublons
+    
 - 1.7.0 -- 2017-09-01
 
     - add OrmToolsHelper::getPlural method
