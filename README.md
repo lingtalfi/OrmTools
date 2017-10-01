@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.10.0 -- 2017-10-01
+
+    - add OrmToolsHelper::renderGetMethod options argument
+    
 - 1.9.0 -- 2017-09-04
 
     - update OrmToolsHelper::renderSetMethod method now has an options argument

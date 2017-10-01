@@ -143,7 +143,7 @@ class OrmToolsHelper
     }
 
 
-    public static function renderGetMethod($column, $hint = null)
+    public static function renderGetMethod($column, $hint = null, array $options = [])
     {
 
         $sp = str_repeat(' ', 4);
@@ -157,6 +157,9 @@ class OrmToolsHelper
         $s = '';
         $s .= $sp . 'public function ' . $fnName . '()' . PHP_EOL;
         $s .= $sp . '{' . PHP_EOL;
+        if (array_key_exists('beforeReturn', $options)) {
+            $s .= $sp2 . $options['beforeReturn'] . PHP_EOL;
+        }
         $s .= $sp2 . 'return $this->' . $column . ';' . PHP_EOL;
         $s .= $sp . '}' . PHP_EOL;
         $s .= PHP_EOL;
