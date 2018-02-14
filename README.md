@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.12.0 -- 2018-02-14
+
+    - add OrmToolsHelper::getHasTables method
+    
 - 1.11.0 -- 2018-02-14
 
     - add OrmToolsHelper::getHasRightTable method

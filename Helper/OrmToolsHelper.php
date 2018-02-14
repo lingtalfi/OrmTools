@@ -85,6 +85,30 @@ class OrmToolsHelper
 
 
     /**
+     * Gets the has tables for the given table.
+     *
+     * Basically if the given table is ek_product,
+     * then it returns all table starting with ek_product_has_
+     *
+     *
+     * @param $table
+     * @return array
+     * @throws \Exception
+     */
+    public static function getHasTables($table)
+    {
+        $ret = [];
+        $needle = $table . "_has_";
+        $tables = QuickPdoInfoTool::getTables(QuickPdoInfoTool::getDatabase());
+        foreach ($tables as $table) {
+            if (0 === strpos($table, $needle)) {
+                $ret[] = $table;
+            }
+        }
+        return $ret;
+    }
+
+    /**
      * Try to guess the right table of a has relationship,
      * using the given has table.
      *
