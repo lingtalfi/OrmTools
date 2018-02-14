@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.13.0 -- 2018-02-14
+
+    - add OrmToolsHelper::getPrettyColumn method
+    
 - 1.12.0 -- 2018-02-14
 
     - add OrmToolsHelper::getHasTables method

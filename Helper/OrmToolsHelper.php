@@ -363,6 +363,22 @@ class OrmToolsHelper
     }
 
 
+    public static function getPrettyColumn($table, array $prettyFields = [])
+    {
+
+        $prettyFields[] = 'label';
+        $prettyFields[] = 'name';
+        $prettyFields = array_unique($prettyFields);
+
+        $cols = QuickPdoInfoTool::getColumnNames($table);
+        foreach ($cols as $col) {
+            if (in_array($col, $prettyFields, true)) {
+                break;
+            }
+        }
+        return $col;
+    }
+
     //--------------------------------------------
     //
     //--------------------------------------------
