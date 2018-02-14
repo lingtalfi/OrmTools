@@ -5,6 +5,7 @@ namespace OrmTools\Helper;
 
 
 use Bat\CaseTool;
+use QuickPdo\QuickPdo;
 use QuickPdo\QuickPdoInfoTool;
 
 class OrmToolsHelper
@@ -80,6 +81,58 @@ class OrmToolsHelper
         }
 
         return $word;
+    }
+
+
+    /**
+     * Try to guess the right table of a has relationship,
+     * using the given has table.
+     *
+     * Note: if the table name has multiple _has_
+     * (for instance ek_shop_has_product_has_discount),
+     * for now it assumes that the last _has_ is the separator.
+     * This could/should be improved in the future.
+     *
+     *
+     * The algorithm currently is the following:
+     * - we get the right part off from the table name, call it rightCue
+     * - then we take all the foreign keys from the hasTable.
+     *      If the foreign table matches with $prefix$rightCue, then we consider it leads to the right table
+     *
+     * - if this fails, we try the following approach:
+     *          see if $prefix$rightCue is a table, and return it if it matches
+     * - if the approaches above fails, we return false
+     *
+     *
+     * @return string|False
+     *
+     */
+    public static function getHasRightTable($hasTable, $prefix = null)
+    {
+        $p = explode('_has_', $hasTable);
+        if (count($p) > 1) {
+            $rightCue = array_pop($p);
+            $fkeys = QuickPdoInfoTool::getForeignKeysInfo($hasTable);
+            // first try with rightCue_id
+            foreach ($fkeys as $key => $info) {
+                $fTable = $info[1];
+                if ($fTable === $prefix . $rightCue) {
+                    return $fTable;
+                }
+            }
+
+            // try the table name directly
+            $table = $prefix . $rightCue;
+            try {
+
+                if (false !== QuickPdo::fetch("select count(*) as count from $table")) {
+                    return $table;
+                }
+            } catch (\PDOException $e) {
+
+            }
+        }
+        return false;
     }
 
 

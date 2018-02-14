@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.11.0 -- 2018-02-14
+
+    - add OrmToolsHelper::getHasRightTable method
+    
 - 1.10.0 -- 2017-10-01
 
     - add OrmToolsHelper::renderGetMethod options argument
