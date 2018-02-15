@@ -484,6 +484,25 @@ class OrmToolsHelper
         return $ret;
     }
 
+
+    public static function getRepresentativeColumn($table)
+    {
+        $cols = QuickPdoInfoTool::getColumnDataTypes($table);
+
+
+        if (array_key_exists("label", $cols)) {
+            return "label";
+        } elseif (array_key_exists("name", $cols)) {
+            return "name";
+        }
+        foreach ($cols as $col => $type) {
+            if ('varchar' === $type) {
+                return $col;
+            }
+        }
+        return $col;
+    }
+
     //--------------------------------------------
     //
     //--------------------------------------------
