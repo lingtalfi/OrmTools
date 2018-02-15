@@ -400,11 +400,10 @@ class OrmToolsHelper
 
 
         $p = explode(".", $table);
-        if(count($p)>1){
+        if (count($p) > 1) {
             $db = $p[0];
             $table = $p[1];
-        }
-        else{
+        } else {
             $table = array_shift($p);
             $db = null;
         }
@@ -416,6 +415,64 @@ class OrmToolsHelper
             }
         }
         return $col;
+    }
+
+
+    /**
+     * Takes a tables array: [address, seller],
+     * and returns a table2Alias map: [address => a, seller => s].
+     *
+     * It also handles prefixes:
+     * [ek_address, ek_seller]  ==> [ek_address => a, ek_seller => s]
+     *
+     *
+     *
+     *
+     * @param array $tables
+     * @param null $prefix
+     * @return array
+     */
+    public static function getAliases(array $tables, $prefix = null)
+    {
+        $ret = [];
+        if (null !== $prefix) {
+            if (!is_array($prefix)) {
+                $prefix = [$prefix];
+            }
+        } else {
+            $prefix = [];
+        }
+
+        $usefulTableNames = [];
+        foreach ($tables as $table) {
+            $found = false;
+            foreach ($prefix as $p) {
+                if (0 === strpos($table, $p)) {
+                    $usefulTableNames[$table] = substr($table, strlen($p));
+                    $found = true;
+                    break;
+                }
+            }
+            if (false === $found) {
+                $usefulTableNames[$table] = $table;
+            }
+        }
+
+        $usefulTableNames=array_unique($usefulTableNames);
+        foreach ($usefulTableNames as $table => $name) {
+            $alias = $name;
+            $length = 1;
+            while (true) {
+                $test = substr($alias, 0, $length);
+                if (false === in_array($test, $ret, true)) {
+                    $ret[$table] = $test;
+                    break;
+                }
+                $length++;
+            }
+        }
+
+        return $ret;
     }
 
     //--------------------------------------------
