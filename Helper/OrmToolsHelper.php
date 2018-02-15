@@ -45,6 +45,11 @@ class OrmToolsHelper
     ];
 
 
+    public static function getRic($table)
+    {
+        return QuickPdoInfoTool::getPrimaryKey($table);
+    }
+
     public static function getPlural($word)
     {
 
