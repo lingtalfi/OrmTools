@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.14.1 -- 2018-02-15
+
+    - add OrmToolsHelper::getAliases forbiddenAliases argument  
+    
 - 1.14.0 -- 2018-02-15
 
     - add OrmToolsHelper::getAliases method  

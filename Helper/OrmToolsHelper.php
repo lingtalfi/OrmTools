@@ -431,8 +431,9 @@ class OrmToolsHelper
      * @param array $tables
      * @param null $prefix
      * @return array
+     * @throws \Exception
      */
-    public static function getAliases(array $tables, $prefix = null)
+    public static function getAliases(array $tables, $prefix = null, array $forbiddenAliases = [])
     {
         $ret = [];
         if (null !== $prefix) {
@@ -458,12 +459,20 @@ class OrmToolsHelper
             }
         }
 
-        $usefulTableNames=array_unique($usefulTableNames);
+        $usefulTableNames = array_unique($usefulTableNames);
+        $c = 0;
         foreach ($usefulTableNames as $table => $name) {
             $alias = $name;
             $length = 1;
             while (true) {
+                if ($c > 10000) {
+                    throw new \Exception("too much tries for aliases, is that normal?");
+                }
+                $c++;
                 $test = substr($alias, 0, $length);
+                if (in_array($test, $forbiddenAliases, true)) {
+                    continue;
+                }
                 if (false === in_array($test, $ret, true)) {
                     $ret[$table] = $test;
                     break;
