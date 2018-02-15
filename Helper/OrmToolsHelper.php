@@ -483,6 +483,7 @@ class OrmToolsHelper
                 $c++;
                 $test = substr($alias, 0, $length);
                 if (in_array($test, $forbiddenAliases, true)) {
+                    $length++;
                     continue;
                 }
                 if (false === in_array($test, $ret, true)) {
