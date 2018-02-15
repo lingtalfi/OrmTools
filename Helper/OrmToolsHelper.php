@@ -47,7 +47,13 @@ class OrmToolsHelper
 
     public static function getRic($table)
     {
+        $ret = [];
+        if (false !== ($ai = QuickPdoInfoTool::getAutoIncrementedField($table))) {
+            $ret[] = $ai;
+            return $ret;
+        }
         return QuickPdoInfoTool::getPrimaryKey($table);
+
     }
 
     public static function getPlural($word)
@@ -148,28 +154,29 @@ class OrmToolsHelper
         $p = explode('_has_', $hasTable);
         if (count($p) > 1) {
             $rightCue = array_pop($p);
-            $fkeys = QuickPdoInfoTool::getForeignKeysInfo($hasTable);
-            // first try with rightCue_id
-            foreach ($fkeys as $key => $info) {
-                $fTable = $info[1];
-                foreach ($prefix as $pre) {
-                    if ($fTable === $pre . $rightCue) {
-                        return $fTable;
-                    }
-                }
-            }
+//            $fkeys = QuickPdoInfoTool::getForeignKeysInfo($hasTable);
+//            // first try with rightCue_id
+//            foreach ($fkeys as $key => $info) {
+//                $fTable = $info[1];
+//                foreach ($prefix as $pre) {
+//                    if ($fTable === $pre . $rightCue) {
+//                        return $fTable;
+//                    }
+//                }
+//            }
+
 
             // try the table name directly
-            try {
 
-                foreach ($prefix as $pre) {
+            foreach ($prefix as $pre) {
+                try {
                     $table = $pre . $rightCue;
                     if (false !== QuickPdo::fetch("select count(*) as count from $table")) {
                         return $table;
                     }
-                }
-            } catch (\PDOException $e) {
+                } catch (\PDOException $e) {
 
+                }
             }
         }
         return false;

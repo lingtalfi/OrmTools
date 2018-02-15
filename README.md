@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.16.1 -- 2018-02-15
+
+    - fix OrmToolsHelper::getHasRightTable wrong nesting of exceptions  
+    
 - 1.16.0 -- 2018-02-15
 
     - add OrmToolsHelper::getRic method  
