@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.13.1 -- 2018-02-15
+
+    - enhance OrmToolsHelper::getPrettyColumn method, now handles complete table name with db prefix  
+    
 - 1.13.0 -- 2018-02-14
 
     - add OrmToolsHelper::getPrettyColumn method

@@ -133,6 +133,13 @@ class OrmToolsHelper
      */
     public static function getHasRightTable($hasTable, $prefix = null)
     {
+
+        if (null !== $prefix) {
+            if (!is_array($prefix)) {
+                $prefix = [$prefix];
+            }
+        }
+
         $p = explode('_has_', $hasTable);
         if (count($p) > 1) {
             $rightCue = array_pop($p);
@@ -140,15 +147,36 @@ class OrmToolsHelper
             // first try with rightCue_id
             foreach ($fkeys as $key => $info) {
                 $fTable = $info[1];
-                if ($fTable === $prefix . $rightCue) {
-                    return $fTable;
+                foreach ($prefix as $pre) {
+                    if ($fTable === $pre . $rightCue) {
+                        return $fTable;
+                    }
                 }
             }
 
             // try the table name directly
-            $table = $prefix . $rightCue;
             try {
 
+                foreach ($prefix as $pre) {
+                    $table = $pre . $rightCue;
+                    if (false !== QuickPdo::fetch("select count(*) as count from $table")) {
+                        return $table;
+                    }
+                }
+            } catch (\PDOException $e) {
+
+            }
+        }
+        return false;
+    }
+
+
+    public static function getHasLeftTable($hasTable)
+    {
+        $p = explode('_has_', $hasTable);
+        if (count($p) > 1) {
+            $table = array_shift($p);
+            try {
                 if (false !== QuickPdo::fetch("select count(*) as count from $table")) {
                     return $table;
                 }
@@ -370,7 +398,18 @@ class OrmToolsHelper
         $prettyFields[] = 'name';
         $prettyFields = array_unique($prettyFields);
 
-        $cols = QuickPdoInfoTool::getColumnNames($table);
+
+        $p = explode(".", $table);
+        if(count($p)>1){
+            $db = $p[0];
+            $table = $p[1];
+        }
+        else{
+            $table = array_shift($p);
+            $db = null;
+        }
+
+        $cols = QuickPdoInfoTool::getColumnNames($table, $db);
         foreach ($cols as $col) {
             if (in_array($col, $prettyFields, true)) {
                 break;
