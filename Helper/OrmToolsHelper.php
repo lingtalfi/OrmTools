@@ -412,21 +412,25 @@ class OrmToolsHelper
         $prettyFields = array_unique($prettyFields);
 
 
-        $p = explode(".", $table);
-        if (count($p) > 1) {
-            $db = $p[0];
-            $table = $p[1];
-        } else {
-            $table = array_shift($p);
-            $db = null;
-        }
-
-        $cols = QuickPdoInfoTool::getColumnNames($table, $db);
-        foreach ($cols as $col) {
+        $cols = QuickPdoInfoTool::getColumnDataTypes($table);
+        $found = false;
+        $firstVarChar = null;
+        foreach ($cols as $col => $type) {
             if (in_array($col, $prettyFields, true)) {
+                $found = true;
                 break;
             }
+            if (null === $firstVarChar && 'varchar' === $type) {
+                $firstVarChar = $col;
+            }
         }
+
+        if (false === $found) {
+            if (null !== $firstVarChar) {
+                $col = $firstVarChar;
+            }
+        }
+
         return $col;
     }
 
