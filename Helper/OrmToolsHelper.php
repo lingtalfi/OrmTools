@@ -52,7 +52,7 @@ class OrmToolsHelper
             $ret[] = $ai;
             return $ret;
         }
-        return QuickPdoInfoTool::getPrimaryKey($table);
+        return QuickPdoInfoTool::getPrimaryKey($table, null, true);
 
     }
 

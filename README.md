@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.16.3 -- 2018-02-16
+
+    - fix OrmToolsHelper::getRic not returning all fields if no primary key   
+    
 - 1.16.2 -- 2018-02-15
 
     - fix OrmToolsHelper::getAliases bad handling of infinite loop with forbidden aliases   
