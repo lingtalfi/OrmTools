@@ -45,14 +45,15 @@ class OrmToolsHelper
     ];
 
 
-    public static function getRic($table)
+    public static function getRic($table, &$hasPrimaryKey = false)
     {
         $ret = [];
         if (false !== ($ai = QuickPdoInfoTool::getAutoIncrementedField($table))) {
             $ret[] = $ai;
+            $hasPrimaryKey = true;
             return $ret;
         }
-        return QuickPdoInfoTool::getPrimaryKey($table, null, true);
+        return QuickPdoInfoTool::getPrimaryKey($table, null, true, $hasPrimaryKey);
 
     }
 

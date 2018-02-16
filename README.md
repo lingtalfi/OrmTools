@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.17.0 -- 2018-02-16
+
+    - add OrmToolsHelper::getRic $hasPrimaryKey flag   
+    
 - 1.16.3 -- 2018-02-16
 
     - fix OrmToolsHelper::getRic not returning all fields if no primary key   
