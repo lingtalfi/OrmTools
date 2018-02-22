@@ -512,6 +512,10 @@ So, may the force be with you.
 History Log
 ------------------
     
+- 1.18.0 -- 2018-02-22
+
+    - enhance OrmToolsHelper::getRepresentativeColumn now accepts ref and reference   
+    
 - 1.17.1 -- 2018-02-16
 
     - fix OrmToolsHelper::getPrettyColumn not returning the first varchar    

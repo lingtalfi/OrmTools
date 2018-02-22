@@ -508,11 +508,19 @@ class OrmToolsHelper
         $cols = QuickPdoInfoTool::getColumnDataTypes($table);
 
 
-        if (array_key_exists("label", $cols)) {
-            return "label";
-        } elseif (array_key_exists("name", $cols)) {
-            return "name";
+        $prettyCols = [
+            "label",
+            "name",
+            "ref",
+            "reference",
+        ];
+        foreach ($prettyCols as $col) {
+            if (array_key_exists($col, $cols)) {
+                return $col;
+            }
         }
+
+
         foreach ($cols as $col => $type) {
             if ('varchar' === $type) {
                 return $col;
