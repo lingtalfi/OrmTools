@@ -1,7 +1,7 @@
 <?php
 
 
-namespace OrmTools\Util\Chip\ChipGenerator;
+namespace Ling\OrmTools\Util\Chip\ChipGenerator;
 
 
 class ChipDescription

@@ -1,12 +1,12 @@
 <?php
 
 
-namespace OrmTools\Helper;
+namespace Ling\OrmTools\Helper;
 
 
-use Bat\CaseTool;
-use QuickPdo\QuickPdo;
-use QuickPdo\QuickPdoInfoTool;
+use Ling\Bat\CaseTool;
+use Ling\QuickPdo\QuickPdo;
+use Ling\QuickPdo\QuickPdoInfoTool;
 
 class OrmToolsHelper
 {

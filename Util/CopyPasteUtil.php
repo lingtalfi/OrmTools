@@ -1,12 +1,12 @@
 <?php
 
 
-namespace OrmTools\Util;
+namespace Ling\OrmTools\Util;
 
 
-use OrmTools\Exception\OrmToolsException;
-use OrmTools\Helper\OrmToolsHelper;
-use QuickPdo\QuickPdoInfoTool;
+use Ling\OrmTools\Exception\OrmToolsException;
+use Ling\OrmTools\Helper\OrmToolsHelper;
+use Ling\QuickPdo\QuickPdoInfoTool;
 
 class CopyPasteUtil
 {

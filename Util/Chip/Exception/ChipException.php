@@ -1,7 +1,7 @@
 <?php
 
 
-namespace OrmTools\Util\Chip\Exception;
+namespace Ling\OrmTools\Util\Chip\Exception;
 
 
 class ChipException extends \Exception

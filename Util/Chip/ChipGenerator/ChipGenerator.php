@@ -1,11 +1,11 @@
 <?php
 
 
-namespace OrmTools\Util\Chip\ChipGenerator;
+namespace Ling\OrmTools\Util\Chip\ChipGenerator;
 
-use Bat\CaseTool;
-use Bat\FileSystemTool;
-use OrmTools\Helper\OrmToolsHelper;
+use Ling\Bat\CaseTool;
+use Ling\Bat\FileSystemTool;
+use Ling\OrmTools\Helper\OrmToolsHelper;
 
 
 /**

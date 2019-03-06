@@ -1,11 +1,11 @@
 <?php
 
 
-namespace OrmTools\Util\Chip\Processor;
+namespace Ling\OrmTools\Util\Chip\Processor;
 
 
 
-use OrmTools\Util\Chip\Exception\ChipException;
+use Ling\OrmTools\Util\Chip\Exception\ChipException;
 
 class ChipProcessor
 {

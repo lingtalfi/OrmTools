@@ -14,7 +14,7 @@ Install
 ==========
 Using the [uni](https://github.com/lingtalfi/universe-naive-importer) command.
 ```bash
-uni import OrmTools
+uni import Ling/OrmTools
 ```
 
 Or just download it and place it where you want otherwise.
@@ -46,7 +46,7 @@ CopyPasteUtil - Howto
 <?php
 
 use Core\Services\A;
-use OrmTools\Util\CopyPasteUtil;
+use Ling\OrmTools\Util\CopyPasteUtil;
 
 
 require_once __DIR__ . "/../boot.php";

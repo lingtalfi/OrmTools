@@ -1,7 +1,7 @@
 <?php
 
 
-namespace OrmTools\Exception;
+namespace Ling\OrmTools\Exception;
 
 
 class OrmToolsException extends \Exception
